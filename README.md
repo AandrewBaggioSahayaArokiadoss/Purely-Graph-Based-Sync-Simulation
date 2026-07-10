@@ -2,7 +2,7 @@
 
 This project presents an algorithm for synchronizing a network of identical nonlinear dynamical systems over a digraph. Instead of solving Lyapunov inequalities or LMIs, the method assigns coupling strengths combinatorially by analyzing directed cycles and directed trees.
 
-The notebook, `pure-graph-sync.ipynb`, generates a random directed graph, applies the coupling-strength assignment algorithm, and numerically simulates the resulting coupled network. The results show that neighboring system trajectories converge toward each other over time, indicating synchronization.
+The notebook, `pure-graph-sync.ipynb`, generates a random digraph, applies the coupling-strength assignment algorithm, and numerically simulates the resulting coupled network. The results show that neighboring system trajectories converge toward each other over time, indicating synchronization.
 
 ## Overview
 
@@ -39,7 +39,7 @@ These conditions are sufficient for the coupling-strength assignment method used
 
 The notebook performs the following steps:
 
-1. **Generates a random directed graph** with one root strongly connected component.
+1. **Generates a random digraph** with one root strongly connected component.
 2. **Assigns coupling strengths** to the graph using the proposed graph-theoretic rule.
 3. **Defines the Lorenz oscillator** as the system dynamics.
 4. **Simulates the full coupled system** using numerical ODE integration.
@@ -51,7 +51,7 @@ The notebook performs the following steps:
 
 The notebook produces these outputs:
 
-- `network.svg` — visualization of the directed graph.
+- `network.svg` — visualization of the digraph.
 - `pairwise_distances.png` — plot showing synchronization behavior.
 - `adjacency_matrix.csv` — weighted adjacency matrix used in the simulation.
 - `pairwise_distances.xlsx` — time-series of pairwise distances.
