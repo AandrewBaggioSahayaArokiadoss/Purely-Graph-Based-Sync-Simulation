@@ -25,7 +25,7 @@ The method applies when two conditions hold:
    The uncoupled dynamics must satisfy a quadratic inequality of the form
 
    \[
-   (x-y)^T(f(x,t)-f(y,t)) \le (x-y)^T(aP-cI)(x-y)
+   (x-y)^T(f(x,t)-f(y,t)) \leq (x-y)^T(aP-cI)(x-y)
    \]
 
    for some diagonal positive-definite matrix \(P\), scalar \(a\), and constant \(c > 0\).
