@@ -108,15 +108,3 @@ pure-graph-sync/
     ├── pairwise_distances.png
     ├── adjacency_matrix.csv
     └── pairwise_distances.xlsx
-```
-
-## Suggested Resume Description
-
-You can describe this project on your resume as:
-
-**Developed a graph-theoretic synchronization algorithm for nonlinear dynamical networks on directed graphs and demonstrated convergence using simulated coupled Lorenz oscillators.**
-
-If you want, I can next turn this into:
-- a more formal academic README,
-- a shorter recruiter-friendly README,
-- or a polished resume bullet list.
