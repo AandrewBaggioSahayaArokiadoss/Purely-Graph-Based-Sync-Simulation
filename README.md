@@ -1,64 +1,71 @@
-# Synchronizing Nonlinear Dynamical Networks using Purely Graph Theoretic Tools
+Absolutely — here is a polished GitHub README draft you can use directly.
 
-This project demonstrates a coupling-strength assignment algorithm for
-synchronizing a network of identical dynamical systems connected over a
-**directed** graph. Unlike conventional approaches, the algorithm does not
-require solving any matrix (Lyapunov/LMI) inequalities. Instead, it works
-combinatorially — by locating directed cycles and constructing a spanning
-tree of the network — giving it a computational complexity of **O(n·(m−n))**,
-where `n` is the number of vertices and `m` is the number of arcs (edges).
+# Synchronizing Nonlinear Dynamical Networks Using Purely Graph-Theoretic Tools
 
-The notebook (`pure-graph-sync.ipynb`) builds a random
-directed graph, applies the algorithm, and shows numerically that the
-distance between every pair of neighboring nodes' state trajectories
-converges to zero — i.e., the network synchronizes.
+This project presents a purely graph-theoretic method for synchronizing a network of identical nonlinear dynamical systems over a **directed** graph. Instead of solving Lyapunov inequalities or LMIs, the method assigns coupling strengths combinatorially by analyzing directed cycles and a spanning-tree structure.
 
-## Conditions for the Algorithm to Apply
+The notebook, `pure-graph-sync.ipynb`, generates a random directed graph, applies the coupling-strength assignment algorithm, and numerically simulates the resulting coupled network. The results show that neighboring node trajectories converge toward each other over time, indicating synchronization.
 
-The method is guaranteed to work whenever two conditions hold:
+## Overview
 
-1. **QUAD property** — each node's uncoupled dynamics `f(x, t)` must satisfy
-   a quadratic inequality of the form
+Most synchronization methods for nonlinear networks depend on matrix inequalities, detailed model assumptions, or expensive numerical solvers. This project follows a different path: it uses only graph structure plus a mild condition on the node dynamics to determine coupling strengths.
 
-   `(x − y)ᵀ(f(x,t) − f(y,t)) ≤ (x − y)ᵀ (aP-c) (x − y)`
+The main idea is that if the graph contains a directed spanning tree and the node dynamics satisfy the required QUAD condition, then synchronization can be achieved without solving matrix inequalities.
 
-   for some diagonal positive-definite matrix `P` and scalar `a`. This is a
-   mild, commonly-satisfied condition — the Lorenz system, Chua's circuit,
-   and many other chaotic oscillators satisfy it.
+## Key Idea
 
-2. **Directed spanning tree** — the network topology must contain at least
-   one directed spanning tree, i.e., a "root" node (or root strongly
-   connected component) from which every other node is reachable by a
-   directed path. This is the weakest possible connectivity requirement for
-   synchronization — much weaker than requiring the graph to be strongly
-   connected or undirected.
+The algorithm works by:
 
-If a dynamical system other than the Lorenz oscillator is used, its own
-QUAD parameters `(P, a)` must be derived and supplied in place of the ones
-computed here.
+- Building a directed graph with a root strongly connected component.
+- Assigning edge weights using graph-theoretic rules.
+- Constructing the weighted graph Laplacian.
+- Simulating the coupled nonlinear system.
+- Verifying synchronization through pairwise distance decay.
+
+## When the Method Works
+
+The method applies when two conditions hold:
+
+1. **QUAD condition on the node dynamics.**  
+   The uncoupled dynamics must satisfy a quadratic inequality of the form
+
+   \[
+   (x-y)^T(f(x,t)-f(y,t)) \le (x-y)^T(aP-c)(x-y)
+   \]
+
+   for some diagonal positive-definite matrix \(P\), scalar \(a\), and constant \(c > 0\).
+
+2. **Directed spanning tree in the network.**  
+   The graph must contain a directed spanning tree, meaning there is a root node or root strongly connected component from which every other node is reachable by a directed path.
+
+These conditions are sufficient for the coupling-strength assignment method used in the notebook.
 
 ## What the Notebook Does
 
-1. **`generate_one_root_scc(n)`** — builds a random digraph on `n` nodes
-   that contains a directed cycle (the root SCC) which reaches every other
-   node, guaranteeing a directed spanning tree exists.
-2. **`sync_coupling_assign(G, weight)`** — assigns the coupling strength
-   (derived from the Lorenz QUAD parameters) to every edge in the graph.
-3. **`lorenz_oscillator`** — the uncoupled node dynamics (vectorized across
-   all `N` nodes at once).
-4. **`coupled_dynamics` / `simulate_coupled_systems`** — assembles the
-   graph Laplacian from the weighted adjacency matrix and integrates the
-   full coupled network ODE with `scipy.integrate.solve_ivp`.
-5. **Figure 1 — Network Plot**: visualizes the random digraph.
-6. **Figure 2 — Pairwise Distances**: plots ‖xᵢ(t) − xᵢ₊₁(t)‖ over time for
-   all neighboring node pairs. Convergence of every curve to zero is the
-   empirical signature that the network has synchronized.
-7. Exports the adjacency matrix (`adjacency_matrix.csv`) and the pairwise
-   distance time series (`pairwise_distances.xlsx`) for further analysis.
+The notebook performs the following steps:
+
+1. **Generates a random directed graph** with one root strongly connected component.
+2. **Assigns coupling strengths** to the graph using the proposed graph-theoretic rule.
+3. **Defines the Lorenz oscillator** as the node dynamics.
+4. **Simulates the full coupled system** using numerical ODE integration.
+5. **Plots the network topology** as the first figure.
+6. **Plots pairwise distances over time** as the second figure.
+7. **Exports results** to CSV and Excel files for further analysis.
+
+## Files Generated
+
+The notebook produces these outputs:
+
+- `network.svg` — visualization of the directed graph.
+- `pairwise_distances.png` — plot showing synchronization behavior.
+- `adjacency_matrix.csv` — weighted adjacency matrix used in the simulation.
+- `pairwise_distances.xlsx` — time-series of pairwise distances.
 
 ## Requirements
 
-```
+Install the following Python packages:
+
+```text
 numpy
 scipy
 pandas
@@ -69,32 +76,52 @@ openpyxl
 
 ## How to Run
 
-Open `pure-graph-sync.ipynb` in Google Colab (or Jupyter)
-and run the cells top to bottom. Plots render inline; no files are written
-until the final "Export Data" cell.
+Open `pure-graph-sync.ipynb` in Google Colab or Jupyter and run the cells from top to bottom.
+
+- The graph is generated randomly.
+- The simulation runs numerically.
+- The plots appear inline.
+- The final cell exports the data files.
 
 ## Using a Different Dynamical System
 
-To synchronize a network of systems other than the Lorenz oscillator:
+To adapt the notebook for another nonlinear system:
 
-1. Replace `lorenz_oscillator` with your system's vector field, vectorized
-   over all `N` nodes (shape `(state_dim, N)`).
-2. Derive the QUAD parameters `P` (diagonal, positive-definite) and `a` for
-   your system.
-3. Replace the `sigma, rho, beta` / `a` computation in the "Run the
-   Simulation" cell with your derived values, and pass your matrix `P` into
-   `simulate_coupled_systems`.
+1. Replace the Lorenz oscillator with your own vector field.
+2. Derive the corresponding QUAD parameters \(P\) and \(a\).
+3. Update the simulation setup with those values.
+4. Keep the graph-theoretic coupling assignment unchanged.
 
-No other part of the algorithm changes — the spanning-tree-based coupling
-assignment (`generate_one_root_scc` + `sync_coupling_assign`) is agnostic
-to the specific node dynamics, as long as the QUAD property holds.
+This makes the approach broadly reusable for other nonlinear systems that satisfy the same structural condition.
 
-## Output
+## Results
 
-- `network.svg`-style plot (shown inline) — the random digraph topology.
-- Pairwise-distance plot (shown inline) — convergence to zero demonstrates
-  synchronization achieved purely from topology (spanning tree) + QUAD
-  parameters, with no matrix inequalities solved.
-- `adjacency_matrix.csv` — the weighted adjacency matrix used in the run.
-- `pairwise_distances.xlsx` — pairwise distance values at every simulated
-  time step.
+The main empirical result is that the pairwise distances between neighboring node trajectories converge toward zero over time. This indicates that the network achieves synchronization using topology-based coupling assignment rather than inequality solving.
+
+## Why This Project Matters
+
+This project combines nonlinear dynamics, directed graph theory, and synchronization analysis in a way that is both mathematically interesting and computationally practical. It shows that network structure alone can be used to design coupling strengths that synchronize complex systems.
+
+## Repository Structure
+
+```text
+pure-graph-sync/
+├── pure-graph-sync.ipynb
+├── README.md
+└── output/
+    ├── network.svg
+    ├── pairwise_distances.png
+    ├── adjacency_matrix.csv
+    └── pairwise_distances.xlsx
+```
+
+## Suggested Resume Description
+
+You can describe this project on your resume as:
+
+**Developed a graph-theoretic synchronization algorithm for nonlinear dynamical networks on directed graphs and demonstrated convergence using simulated coupled Lorenz oscillators.**
+
+If you want, I can next turn this into:
+- a more formal academic README,
+- a shorter recruiter-friendly README,
+- or a polished resume bullet list.
