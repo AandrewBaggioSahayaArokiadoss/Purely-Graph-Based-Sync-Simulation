@@ -69,7 +69,7 @@ openpyxl
 
 ## How to Run
 
-Open `random_digraph_synchronization.ipynb` in Google Colab (or Jupyter)
+Open `pure-graph-sync.ipynb` in Google Colab (or Jupyter)
 and run the cells top to bottom. Plots render inline; no files are written
 until the final "Export Data" cell.
 
