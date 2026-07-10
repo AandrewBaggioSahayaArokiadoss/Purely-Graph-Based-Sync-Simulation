@@ -8,7 +8,7 @@ combinatorially — by locating directed cycles and constructing a spanning
 tree of the network — giving it a computational complexity of **O(n·(m−n))**,
 where `n` is the number of vertices and `m` is the number of arcs (edges).
 
-The notebook (`random_digraph_synchronization.ipynb`) builds a random
+The notebook (`pure-graph-sync.ipynb`) builds a random
 directed graph, applies the algorithm, and shows numerically that the
 distance between every pair of neighboring nodes' state trajectories
 converges to zero — i.e., the network synchronizes.
