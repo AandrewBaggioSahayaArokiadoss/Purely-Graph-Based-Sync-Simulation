@@ -1,21 +1,19 @@
 # Synchronizing Nonlinear Dynamical Networks Using Purely Graph-Theoretic Tools
 
-This project presents a purely graph-theoretic method for synchronizing a network of identical nonlinear dynamical systems over a **directed** graph. Instead of solving Lyapunov inequalities or LMIs, the method assigns coupling strengths combinatorially by analyzing directed cycles and a spanning-tree structure.
+This project presents an algorithm for synchronizing a network of identical nonlinear dynamical systems over a digraph graph. Instead of solving Lyapunov inequalities or LMIs, the method assigns coupling strengths combinatorially by analyzing directed cycles and directed trees.
 
-The notebook, `pure-graph-sync.ipynb`, generates a random directed graph, applies the coupling-strength assignment algorithm, and numerically simulates the resulting coupled network. The results show that neighboring node trajectories converge toward each other over time, indicating synchronization.
+The notebook, `pure-graph-sync.ipynb`, generates a random directed graph, applies the coupling-strength assignment algorithm, and numerically simulates the resulting coupled network. The results show that neighboring system trajectories converge toward each other over time, indicating synchronization.
 
 ## Overview
 
-Most synchronization methods for nonlinear networks depend on matrix inequalities, detailed model assumptions, or expensive numerical solvers. This project follows a different path: it uses only graph structure plus a mild condition on the node dynamics to determine coupling strengths.
-
-The main idea is that if the graph contains a directed spanning tree and the node dynamics satisfy the required QUAD condition, then synchronization can be achieved without solving matrix inequalities.
+This algorithm is from the paper "A (purely) graph-theoretic approach to synchronization of nonlinear dynamical networks". The main idea is that if the graph contains a directed spanning tree and the system dynamics satisfy the required QUAD condition, then synchronization can be achieved without solving matrix inequalities.
 
 ## Key Idea
 
 The algorithm works by:
 
 - Building a directed graph with a root strongly connected component.
-- Assigning edge weights using graph-theoretic rules.
+- Assigning arc weights using graph-theoretic rules.
 - Constructing the weighted graph Laplacian.
 - Simulating the coupled nonlinear system.
 - Verifying synchronization through pairwise distance decay.
@@ -24,7 +22,7 @@ The algorithm works by:
 
 The method applies when two conditions hold:
 
-1. **QUAD condition on the node dynamics.**  
+1. **QUAD condition on the system dynamics.**  
    The uncoupled dynamics must satisfy a quadratic inequality of the form
 
    \[
@@ -34,7 +32,7 @@ The method applies when two conditions hold:
    for some diagonal positive-definite matrix \(P\), scalar \(a\), and constant \(c > 0\).
 
 2. **Directed spanning tree in the network.**  
-   The graph must contain a directed spanning tree, meaning there is a root node or root strongly connected component from which every other node is reachable by a directed path.
+   The graph must contain a directed spanning tree, meaning there is a root vertex or root strongly connected component from which every other vertex is reachable by a directed path.
 
 These conditions are sufficient for the coupling-strength assignment method used in the notebook.
 
@@ -44,7 +42,7 @@ The notebook performs the following steps:
 
 1. **Generates a random directed graph** with one root strongly connected component.
 2. **Assigns coupling strengths** to the graph using the proposed graph-theoretic rule.
-3. **Defines the Lorenz oscillator** as the node dynamics.
+3. **Defines the Lorenz oscillator** as the system dynamics.
 4. **Simulates the full coupled system** using numerical ODE integration.
 5. **Plots the network topology** as the first figure.
 6. **Plots pairwise distances over time** as the second figure.
@@ -94,7 +92,7 @@ This makes the approach broadly reusable for other nonlinear systems that satisf
 
 ## Results
 
-The main empirical result is that the pairwise distances between neighboring node trajectories converge toward zero over time. This indicates that the network achieves synchronization using topology-based coupling assignment rather than inequality solving.
+The main empirical result is that the pairwise distances between neighboring system trajectories converge toward zero over time. This indicates that the network achieves synchronization using topology-based coupling assignment rather than inequality solving.
 
 ## Why This Project Matters
 
