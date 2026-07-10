@@ -1,4 +1,4 @@
-# Random Digraph Synchronization via Spanning-Tree Coupling
+# Synchronizing Nonlinear Dynamical Networks using Purely Graph Theoretic Tools
 
 This project demonstrates a coupling-strength assignment algorithm for
 synchronizing a network of identical dynamical systems connected over a
