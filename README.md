@@ -12,7 +12,7 @@ This algorithm is from the paper "A (purely) graph-theoretic approach to synchro
 
 The algorithm works by:
 
-- Building a digraph with only one root strongly connected component.
+- Building a digraph with only one root strongly connected component(SCC).
 - Assigning arc weights using graph-theoretic rules.
 - Simulating the coupled nonlinear system.
 - Verifying synchronization through pairwise distance decay.
@@ -31,7 +31,7 @@ The method applies when two conditions hold:
    for some diagonal positive-definite matrix \(P\), scalar \(a\), and constant \(c > 0\).
 
 2. **Directed spanning tree in the network.**  
-   The graph must contain a directed spanning tree, meaning there is a root vertex or root strongly connected component from which every other vertex is reachable by a directed path.
+   The graph must contain a directed spanning tree, meaning there is only one strongly connected component that is devoid of inter-SCC incoming arcs
 
 These conditions are sufficient for the coupling-strength assignment method used in the notebook.
 
