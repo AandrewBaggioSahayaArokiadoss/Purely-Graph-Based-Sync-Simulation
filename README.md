@@ -20,7 +20,7 @@ The method is guaranteed to work whenever two conditions hold:
 1. **QUAD property** — each node's uncoupled dynamics `f(x, t)` must satisfy
    a quadratic inequality of the form
 
-   `(x − y)ᵀ P (f(x,t) − f(y,t)) ≤ a (x − y)ᵀ P (x − y)`
+   `(x − y)ᵀ(f(x,t) − f(y,t)) ≤ (x − y)ᵀ (aP-c) (x − y)`
 
    for some diagonal positive-definite matrix `P` and scalar `a`. This is a
    mild, commonly-satisfied condition — the Lorenz system, Chua's circuit,
