@@ -6,7 +6,7 @@ The notebook, `pure-graph-sync.ipynb`, generates a random directed graph, applie
 
 ## Overview
 
-This algorithm is from the paper "A (purely) graph-theoretic approach to synchronization of nonlinear dynamical networks". The main idea is that if the graph contains a directed spanning tree and the system dynamics satisfy the required QUAD condition, then synchronization can be achieved without solving matrix inequalities.
+This algorithm is from the paper "A (purely) graph-theoretic approach to synchronization of nonlinear dynamical networks" (https://doi.org/10.1016/j.physa.2026.131508). The main idea is that if the graph contains a directed spanning tree and the system dynamics satisfy the required QUAD condition, then synchronization can be achieved without solving matrix inequalities.
 
 ## Key Idea
 
