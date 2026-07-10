@@ -24,7 +24,7 @@ The method applies when two conditions hold:
 1. **QUAD condition on the system dynamics.**  
    The uncoupled dynamics must satisfy a quadratic inequality of the form
 
-   (x-y)'(f(x,t)-f(y,t)) < (x-y)'(aP-cI)(x-y)
+   (x-y)'(f(x)-f(y)) < (x-y)'(aP-cI)(x-y)
 
    for some diagonal positive-definite matrix \(P\), scalar \(a\), and constant \(c > 0\).
 
