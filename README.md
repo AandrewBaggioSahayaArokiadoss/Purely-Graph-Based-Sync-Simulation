@@ -1,6 +1,6 @@
 # Synchronizing Nonlinear Dynamical Networks Using Purely Graph-Theoretic Tools
 
-This project presents an algorithm for synchronizing a network of identical nonlinear dynamical systems over a digraph graph. Instead of solving Lyapunov inequalities or LMIs, the method assigns coupling strengths combinatorially by analyzing directed cycles and directed trees.
+This project presents an algorithm for synchronizing a network of identical nonlinear dynamical systems over a digraph. Instead of solving Lyapunov inequalities or LMIs, the method assigns coupling strengths combinatorially by analyzing directed cycles and directed trees.
 
 The notebook, `pure-graph-sync.ipynb`, generates a random directed graph, applies the coupling-strength assignment algorithm, and numerically simulates the resulting coupled network. The results show that neighboring system trajectories converge toward each other over time, indicating synchronization.
 
