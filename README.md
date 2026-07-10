@@ -1,5 +1,3 @@
-Absolutely — here is a polished GitHub README draft you can use directly.
-
 # Synchronizing Nonlinear Dynamical Networks Using Purely Graph-Theoretic Tools
 
 This project presents a purely graph-theoretic method for synchronizing a network of identical nonlinear dynamical systems over a **directed** graph. Instead of solving Lyapunov inequalities or LMIs, the method assigns coupling strengths combinatorially by analyzing directed cycles and a spanning-tree structure.
