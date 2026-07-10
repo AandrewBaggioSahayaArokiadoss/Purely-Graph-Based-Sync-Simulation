@@ -95,7 +95,7 @@ The main empirical result is that the pairwise distances between neighboring sys
 
 ## Why This Project Matters
 
-This project combines nonlinear dynamics, directed graph theory, and synchronization analysis in a way that is both mathematically interesting and computationally practical. It shows that network structure alone can be used to design coupling strengths that synchronize complex systems.
+This project combines nonlinear dynamics, spectral graph theory, and synchronization analysis in a way that is both mathematically interesting and computationally practical. It shows that network structure alone can be used to design coupling strengths that synchronize complex systems.
 
 ## Repository Structure
 
