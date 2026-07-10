@@ -12,7 +12,7 @@ This algorithm is from the paper "A (purely) graph-theoretic approach to synchro
 
 The algorithm works by:
 
-- Building a digraph with only one root strongly connected component(SCC).
+- Building a digraph with only one root strongly connected component (SCC).
 - Assigning arc weights using graph-theoretic rules.
 - Simulating the coupled nonlinear system.
 - Verifying synchronization through pairwise distance decay.
