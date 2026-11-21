@@ -1,108 +1,60 @@
-# Synchronizing Nonlinear Dynamical Networks Using Purely Graph-Theoretic Tools
+# Graph-Theoretic Synchronization — Interactive Notebook
 
-This project presents an algorithm for synchronizing a network of identical nonlinear dynamical systems over a digraph. Instead of solving Lyapunov inequalities or LMIs, the method assigns coupling strengths combinatorially by analyzing directed cycles and directed trees.
+An interactive implementation of the constructive coupling-weight allocation method in [Arokiadoss & Arunkumar, *Physica A* (2026)](https://doi.org/10.1016/j.physa.2026.131508). It uses directed graph structure—**not an LMI solver**—to calculate positive coupling weights and simulate identical nonlinear oscillators.
 
-The notebook, `pure-graph-sync.ipynb`, generates a random digraph, applies the coupling-strength assignment algorithm, and numerically simulates the resulting coupled network. The results show that neighboring system trajectories converge toward each other over time, indicating synchronization.
+![Example: generated network and synchronization error](assets/preview.png)
 
-## Overview
+## Quick start
 
-This algorithm is from the paper "A (purely) graph-theoretic approach to synchronization of nonlinear dynamical networks" (https://doi.org/10.1016/j.physa.2026.131508). The main idea is that if the graph contains a directed spanning tree and the system dynamics satisfy the required QUAD condition, then synchronization can be achieved without solving matrix inequalities.
+1. Open **`graph_theoretic_sync_interactive.ipynb`** in Jupyter or Google Colab.
+2. Run its cells from top to bottom. If packages are missing, uncomment the installation line in the setup cell.
+3. In the dashboard, choose an oscillator and graph, then click **Validate & simulate**.
+4. Optionally click **Export CSV + PNG**. Files are saved to `output/`.
 
-## Key Idea
+Requires Python 3.9+ and `numpy`, `scipy`, `networkx`, `matplotlib`, `ipywidgets`, and `IPython`. The notebook is **self-contained**—no external Python module is needed.
 
-The algorithm works by:
+## Inputs
 
-- Building a digraph with only one root strongly connected component (SCC).
-- Assigning arc weights using graph-theoretic rules.
-- Simulating the coupled nonlinear system.
-- Verifying synchronization through pairwise distance decay.
+| Choice | How it works |
+|---|---|
+| **Dynamics** | Lorenz, Chua, piecewise-linear Rössler-like, or **User-defined** |
+| **User-defined dynamics** | Edit `custom_dynamics(t, X)` and `CUSTOM_INITIAL_STATE` in the clearly marked cell. Choose **User-defined** in the dashboard and enter **the diagonal of `P`** (e.g., `1,0,1`) and **`a > 0`**. |
+| **Random graph** | Generates a random directed graph known to contain an out-arborescence. |
+| **Paste edges** | Enter `tail,head` on each line, e.g., `0,1` followed by `1,2`. |
+| **Upload CSV** | Upload a two-column `tail,head` edge list (optional header). An example is supplied as `example_edges.csv`. |
 
-## When the Method Works
+For pasted/uploaded graphs, set the **number of vertices N**; labels must be integers `0` through `N−1`. An absent edge does not imply an absent vertex. Self-loops are not supported.
 
-The method applies when two conditions hold:
+**Graph safety check:** A directed graph has a spanning **out-arborescence** if and only if its condensation digraph has exactly **one source strongly connected component**. The notebook checks this first. If the condition fails, it prints a warning and **stops before allocating weights**.
 
-1. **QUAD condition on the system dynamics.**  
-   The uncoupled dynamics must satisfy a quadratic inequality of the form
+## Mathematical assumption
 
-   (x-y)'(f(x)-f(y)) < (x-y)'(aP-cI)(x-y)
+For identical node dynamics `f`, the method assumes there exist `a>0`, `c>0`, and a diagonal **0–1** matrix `P` such that
 
-   for some diagonal positive-definite matrix \(P\), scalar \(a\), and constant \(c > 0\).
+\[
+(x-y)^\top\bigl[f(x)-f(y)-aP(x-y)\bigr]\le -c\|x-y\|^2.
+\]
 
-2. **Directed spanning tree in the network.**  
-   The graph must contain a directed spanning tree, meaning there is only one strongly connected component that is devoid of inter-SCC incoming arcs
+This **QUAD condition must hold globally** (or on the domain justified by the theorem). The notebook supplies literature-based `P` and `a` for the three presets; for a custom system **you must justify `P`, `a`, and the existence of `c>0`**. It does **not** establish that condition numerically. The included custom example is a contracting linear system with `P=diag(1,1)`, `a=1`, `c=2`.
 
-These conditions are sufficient for the coupling-strength assignment method used in the notebook.
+The algorithm assigns positive weights to directed edges using SCC decomposition, root-to-vertex shortest paths, positive cycle-space circulations, and incoming-edge rules. It then checks the assigned weights and internal imbalance inequalities.
 
-## What the Notebook Does
+## Outputs
 
-The notebook performs the following steps:
+The notebook shows the directed graph and synchronization-error curves (distances along a spanning out-arborescence, including their mean and maximum). The **Export** button creates:
 
-1. **Generates a random digraph** with one root strongly connected component.
-2. **Assigns coupling strengths** to the graph using the proposed graph-theoretic rule.
-3. **Defines the Lorenz oscillator** as the system dynamics.
-4. **Simulates the full coupled system** using numerical ODE integration.
-5. **Plots the network topology** as the first figure.
-6. **Plots pairwise distances over time** as the second figure.
-7. **Exports results** to CSV and Excel files for further analysis.
+- `directed_edges.csv` — `tail,head,weight`
+- `weighted_adjacency.csv` — receiving-vertex rows, sending-vertex columns
+- `tree_edge_distances.csv` — distances along tree edges over time
+- `synchronization.png` — network and error plots
 
-## Files Generated
+### Scope and limitations
 
-The notebook produces these outputs:
+- The interactive runner supports the three built-in **three-dimensional** oscillators and vectorized custom models of **any state dimension**.
+- Numerical decay over a finite horizon illustrates synchronization; it is not a substitute for verifying the paper's theoretical assumptions.
+- In particular, large positive weights can lead to stiff numerical integration.
+- This is a research demonstration, not a certified black-box synchronizer for arbitrary dynamics.
 
-- `network.svg` — visualization of the digraph.
-- `pairwise_distances.png` — plot showing synchronization behavior.
-- `adjacency_matrix.csv` — weighted adjacency matrix used in the simulation.
-- `pairwise_distances.xlsx` — time-series of pairwise distances.
+## Reference
 
-## Requirements
-
-Install the following Python packages:
-
-```text
-numpy
-scipy
-pandas
-matplotlib
-networkx
-openpyxl
-```
-
-## How to Run
-
-Open `pure-graph-sync.ipynb` in Google Colab or Jupyter and run the cells from top to bottom.
-
-- The graph is generated randomly.
-- The simulation runs numerically.
-- The plots appear inline.
-- The final cell exports the data files.
-
-## Using a Different Dynamical System
-
-To adapt the notebook for another nonlinear system:
-
-1. Replace the Lorenz oscillator with your own vector field.
-2. Derive the corresponding QUAD parameters \(P\) and \(a\).
-3. Update the simulation setup with those values.
-4. Keep the graph-theoretic coupling assignment unchanged.
-
-This makes the approach broadly reusable for other nonlinear systems that satisfy the same structural condition.
-
-## Results
-
-The main empirical result is that the pairwise distances between neighboring system trajectories converge toward zero over time. This indicates that the network achieves synchronization using topology-based coupling assignment rather than inequality solving.
-
-## Why This Project Matters
-
-This project combines nonlinear dynamics, spectral graph theory, and synchronization analysis in a way that is both mathematically interesting and computationally practical. It shows that network structure alone can be used to design coupling strengths that synchronize complex systems.
-
-## Repository Structure
-
-```text
-pure-graph-sync/
-├── pure-graph-sync.ipynb
-├── README.md
-└── output/
-    ├── network.svg
-    ├── pairwise_distances.png
-    ├── adjacency_matrix.csv
-    └── pairwise_distances.xlsx
+A. B. S. Arokiadoss and G. Arunkumar, *A (purely) graph-theoretic approach to synchronization of nonlinear dynamical networks*, *Physica A* **692** (2026), 131508. https://doi.org/10.1016/j.physa.2026.131508
